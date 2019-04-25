@@ -3,6 +3,8 @@ import RowComment from './RowComment'
 import FormComment from './FormComment'
 import axios from 'axios'
 import autoBind from "react-autobind"
+import WarningAlert from '../../../utils/WarningAlert'
+
 
 class TabInfo extends Component {
     constructor(props) {
@@ -30,7 +32,7 @@ class TabInfo extends Component {
                 })
             })
             .catch(function (error) {
-                console.log(error)
+                $('#myModal').modal('show')
             })
     }
 
@@ -38,6 +40,22 @@ class TabInfo extends Component {
         this.setState({
             comments: data
         })
+    }
+    loadData() {
+        axios.get(window.Laravel.baseUrl + '/api/vote')
+            .then(response => {
+                const { pollInfo, pollOption, participantVote, pollId, comments } = response.data;
+                this.setState({
+                    pollInfo: pollInfo,
+                    pollOption: pollOption,
+                    participantVote: participantVote,
+                    pollId: pollId,
+                    comments: comments,
+                })
+            })
+            .catch(function (error) {
+                $('#myModal').modal('show')
+            })
     }
 
     handleSubmit(name, content, pollId, newComments) {
@@ -55,9 +73,10 @@ class TabInfo extends Component {
                 this.setState({
                     comments: newComments
                 })
+                this.loadData()
             })
             .catch(function (error) {
-                console.log(error)
+                $('#myModal').modal('show')
             })
 
 
@@ -71,7 +90,7 @@ class TabInfo extends Component {
         return (
             <React.Fragment>
                 <div className={this.props.tab == 2 ? "tabs-stage-div active-block" : "tabs-stage-div tab-none"}>
-
+                    <WarningAlert />
                     <p className="tab-voting-title">{this.state.pollInfo.title}</p>
                     <p className="tab-voting-descrip">{this.state.pollInfo.description}</p>
                     <p className="poll-info-not-xs">

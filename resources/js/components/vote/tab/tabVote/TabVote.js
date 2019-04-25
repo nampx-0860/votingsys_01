@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import autoBind from "react-autobind";
 import FormInputInfo from './FormInputInfo'
 import axios from 'axios'
-import history from '../../../history'
+import WarningAlert from '../../../utils/WarningAlert'
 
 class TabVote extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class TabVote extends Component {
                 })
             })
             .catch(function (error) {
-                console.log(error)
+                $('#myModal').modal('show')
             })
     }
     loadData() {
@@ -45,7 +45,7 @@ class TabVote extends Component {
                 })
             })
             .catch(function (error) {
-                console.log(error)
+                $('#myModal').modal('show')
             })
     }
     handleClickTabChildren1() {
@@ -58,7 +58,6 @@ class TabVote extends Component {
             email: email,
             option: option
         }
-
         axios.post(url, data)
             .then(response => {
                 console.log(response)
@@ -66,7 +65,7 @@ class TabVote extends Component {
                 this.props.handleClickTabResult()
             })
             .catch(function (error) {
-                console.log(error.response)
+                $('#myModal').modal('show')
             })
 
     }
@@ -78,6 +77,7 @@ class TabVote extends Component {
         return (
             < React.Fragment >
                 <div className={this.props.tab == 1 ? "tabs-stage-div active-block" : "tabs-stage-div tab-none"}>
+                    <WarningAlert />
                     <p className="tab-voting-title">{this.state.pollInfo.title}</p>
                     <p className="tab-voting-descrip">{this.state.pollInfo.description}</p>
                     <label className="poll-count poll-count-mobile">

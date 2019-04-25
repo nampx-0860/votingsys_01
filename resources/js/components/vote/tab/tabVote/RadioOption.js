@@ -45,9 +45,6 @@ class RadioOption extends Component {
                 <div className="modal fade" id={"modalMoreParticipant" + optionId} role="dialog">
                     <div className="modal-dialog modal-sm modal-on-votetab">
                         <div className="modal-content">
-                            <div className="modal-header">
-                                <input type="search" placeholder="Search" />
-                            </div>
                             <div className="modal-body">
                                 <div className="more-participant-area">
                                     {detailParticipantVote}
@@ -66,7 +63,6 @@ class RadioOption extends Component {
                             <input type="radio"
                                 name={'optionOne' + this.props.pollOption.poll_id} value={this.props.pollOption.id}
                                 onChange={this.props.handleChangedOption}
-                                checked={this.props.option == this.props.pollOption.id ? true : ''}
                             />
                             <span className="radio__circle"></span>&nbsp;<p className="radio__text">{this.props.pollOption.name}</p>
                         </span>

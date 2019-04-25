@@ -12,6 +12,7 @@ class FormInputInfo extends Component {
             email: '',
             option: '',
             count: 0,
+            disabled: ''
 
         };
         this.validator = new SimpleReactValidator({
@@ -40,6 +41,9 @@ class FormInputInfo extends Component {
     }
     formSubmit() {
         if (this.validator.allValid()) {
+            this.setState({
+                disabled: true,
+            })
             this.props.handleSubmit(this.state.name, this.state.email, this.state.option)
         } else {
             this.validator.showMessages();
@@ -79,8 +83,8 @@ class FormInputInfo extends Component {
                             <input
                                 className="form-control nameVote"
                                 placeholder="Nhập tên của bạn..."
-                                name="name"
-                                type="text"
+                                name="name" type="text"
+                                disabled={this.state.disabled}
                                 value={this.state.name}
                                 onChange={this.handleInputChange}
                             />
@@ -96,8 +100,8 @@ class FormInputInfo extends Component {
                             <input
                                 className="form-control emailVote"
                                 placeholder="Nhập địa chỉ email của bạn..."
-                                name="email"
-                                type="email"
+                                name="email" type="email"
+                                disabled={this.state.disabled}
                                 value={this.state.email}
                                 onChange={this.handleInputChange}
                             />

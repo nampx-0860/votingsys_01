@@ -11,37 +11,18 @@ class TabResult extends Component {
         autoBind(this)
         this.state = {
             tabResult: "tab-table",
-            pollId: '',
-            pollInfo: [],
             pollOption: [],
-            pollOptionFake: [],
-            participantVote: [],
         }
-    }
-    componentDidMount() {
-        axios.get(window.Laravel.baseUrl + '/api/vote')
-            .then(response => {
-                const { pollInfo, pollOption, participantVote, pollId } = response.data;
-                this.setState({
-                    pollInfo: pollInfo,
-                    pollOptionFake: pollOption,
-                    participantVote: participantVote,
-                    pollId: pollId,
-                })
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
     }
     componentDidUpdate(oldProps) {
         const newProps = this.props
-        const pollOptionFake = this.state.pollOptionFake
+        const pollOptionFake = this.props.pollOptionFake
         if (oldProps.tab !== newProps.tab) {
             this.setState({ pollOption: pollOptionFake })
         }
     }
     handleClickTabResult1() {
-        const pollOptionFake = this.state.pollOptionFake
+        const pollOptionFake = this.props.pollOptionFake
         this.setState({
             tabResult: "tab-table",
             pollOption: pollOptionFake
@@ -64,12 +45,12 @@ class TabResult extends Component {
         let sumOption = 0;
         let arrOptionPieCharts = [];
         let arrOptionBarCharts = [];
-        const participantVote = this.state.participantVote;
-        this.state.pollOptionFake.map(function (pollOption) {
+        const participantVote = this.props.participantVote;
+        this.props.pollOptionFake.map(function (pollOption) {
             const countByOption = participantVote.filter((countVote) => countVote.option_id === pollOption.id).length;
             sumOption = sumOption + countByOption;
         });
-        this.state.pollOptionFake.map(function (pollOption) {
+        this.props.pollOptionFake.map(function (pollOption) {
             const countByOption = participantVote.filter((countVote) => countVote.option_id === pollOption.id).length;
             arrOptionPieCharts.push({ name: pollOption.name, y: (countByOption / sumOption * 100) })
             arrOptionBarCharts.push({ name: pollOption.name, y: countByOption })
@@ -95,8 +76,8 @@ class TabResult extends Component {
                             tabResult={this.state.tabResult}
                             handleClickTabResult1={this.handleClickTabResult1}
                             pollOption={this.state.pollOption}
-                            participantVote={this.state.participantVote}
-                            pollId={this.state.pollId}
+                            participantVote={this.props.participantVote}
+                            pollId={this.props.pollId}
                         />
                         <BarChart
                             tabResult={this.state.tabResult}

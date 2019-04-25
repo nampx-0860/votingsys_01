@@ -3,6 +3,8 @@ import autoBind from "react-autobind";
 import TabVote from './tab/tabVote/TabVote';
 import TabInfo from './tab/tabInfo/TabInfo';
 import TabResult from './tab/tabResult/TabResult';
+import axios from 'axios'
+import WarningAlert from '../utils/WarningAlert'
 
 class VoteApp extends Component {
     constructor(props) {
@@ -10,8 +12,25 @@ class VoteApp extends Component {
         this.state = {
             tab: 1,
             tabChildren: 1,
+            pollId: '',
+            pollOptionFake: [],
+            participantVote: [],
         };
         autoBind(this);
+    }
+    componentDidMount() {
+        axios.get(window.Laravel.baseUrl + '/api/vote')
+            .then(response => {
+                const { pollOption, participantVote, pollId } = response.data;
+                this.setState({
+                    pollOptionFake: pollOption,
+                    participantVote: participantVote,
+                    pollId: pollId,
+                })
+            })
+            .catch(function (error) {
+                $('#myModal').modal('show')
+            })
     }
     handleClickTabVote() {
         this.setState({
@@ -27,6 +46,7 @@ class VoteApp extends Component {
         this.setState({
             tab: 3
         });
+        this.loadData()
     }
     handleClickTabChildren1() {
         this.setState({
@@ -39,9 +59,24 @@ class VoteApp extends Component {
         });
     }
 
+    loadData() {
+        axios.get(window.Laravel.baseUrl + '/api/vote')
+            .then(response => {
+                const { pollOption, participantVote, pollId } = response.data;
+                this.setState({
+                    pollOptionFake: pollOption,
+                    participantVote: participantVote,
+                    pollId: pollId,
+                })
+            })
+            .catch(function (error) {
+                $('#myModal').modal('show')
+            })
+    }
     render() {
         return (
             <div className="tabs">
+                <WarningAlert />
                 <ul className="tabs-nav">
                     <li id="first-tab" className={this.state.tab == 1 ? "tab-active" : ""}>
                         <a onClick={() => this.handleClickTabVote()}>
@@ -68,7 +103,12 @@ class VoteApp extends Component {
                         handleClickTabChildren2={this.handleClickTabChildren2}
                     />
                     <TabInfo tab={this.state.tab} />
-                    <TabResult tab={this.state.tab} />
+                    <TabResult
+                        tab={this.state.tab}
+                        pollId={this.state.pollId}
+                        pollOptionFake={this.state.pollOptionFake}
+                        participantVote={this.state.participantVote}
+                    />
                 </div>
             </div>
         );

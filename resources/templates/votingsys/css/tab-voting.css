@@ -1085,3 +1085,36 @@ input[type=search]:focus {
     font-size: 20px !important;
     line-height: 15px;
 }
+
+/* icon warning modal */
+
+.icon.warning {
+    display: inline-block;
+    top: 0.225em;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    background-color: transparent;
+    border: 3px solid #fd3;
+    border-radius: 50%;
+}
+
+.icon.warning::after {
+    display: block;
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    padding: 0 1px;
+    margin-bottom: auto;
+    text-align: center;
+    font-family: "Garamond";
+    content: "!";
+    font-size: 90px;
+    font-weight: bold;
+    color: #fd3;
+}
+
+.warning-alert {
+    margin-top: 10%;
+}
